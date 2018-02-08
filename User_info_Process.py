@@ -2,11 +2,11 @@ import label_image_weather
 
 def get_info(flag):
     if flag:
-        temperature = input('Temperature :')
-        humidity = input('Humidity :')
-        wind = input('Wind :')
-        weather = input('Weather :') #rain, snow or not
-        visibility = input('Visibility :')
+        temperature = float(input('Temperature（℃） :'))
+        humidity = float(input('Humidity（0～100|%） :'))
+        wind = float(input('Wind （级）:'))
+        weather = int(input('Weather （最近是否有雨雪 输入0或1）:')) #rain, snow or not
+        visibility = float(input('Visibility （可见距离|km）:'))
         return [temperature, humidity, wind, weather, visibility]
     else:
         return None
@@ -15,33 +15,33 @@ def deal_with_info(detection_result, info_list):
     #TODO Build Better Decision Tree
     if detection_result == "fuchen yangsha shachenbao":
         if info_list[2] <= 4:
-            return 'FuChen'
+            return '浮尘'
         elif info_list[-1] <= 1:
-            return 'ShaChenBao'
+            return '沙尘暴'
         else:
-            return 'YangSha'
+            return '扬沙'
 
     if detection_result == 'mai qingwu wu':
         if info_list[1] <= 80:
-            return 'Mai'
+            return '霾'
         elif info_list[-1] >10:
-            return 'QingWu'
+            return '轻雾'
         else:
-            return 'Wu'
+            return '雾'
 
     if detection_result == 'wusong yusong wuyumix':
         if not info_list[-2]:
-            return 'WuSong'
+            return '雾凇'
         elif info_list[-1] < 10:
-            return 'WuYuMix'
+            return '雾凇雨凇混合'
         else:
-            return 'YuSong'
+            return '雨凇'
 
     else:
         return detection_result
 
 if __name__ == '__main__':
-    image_path = "4118964.jpg"
+    image_path = "/home/vickers_zhu/桌面/timg.jpeg"
     model_path_without_flag = './models_labels/weather_output_without_info.pb'
     label_path_without_flag  = './models_labels/output_labels_without_info.txt'
     model_path_with_flag = './models_labels/output_graph_with_info.pb'
